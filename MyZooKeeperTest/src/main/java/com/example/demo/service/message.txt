@@ -1,0 +1,24 @@
+只有关注了节点  才会触发Watcher接口
+如 list = zk.getChildren("/", this);  因为关注了根目录  所以  任何节点修改都会触发 
+不过，如果client 还没有关注任何目录  也不会触发  除非你关注过
+
+
+{"0":"test_node","1":"zookeeper"}
+333==   {"path":"/","state":"SyncConnected","type":"NodeChildrenChanged","wrapper":{"path":"/","state":3,"type":4}}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
