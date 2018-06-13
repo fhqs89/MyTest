@@ -79,11 +79,11 @@ public class TestZkOperateServiceImpl implements Watcher,TestZkOperateService,In
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		try {
-			zk = new ZooKeeper(hostPort,15000,this);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			zk = new ZooKeeper(hostPort,15000,this);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 	}
 
 	@Override

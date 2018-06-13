@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.demo.service.TestService;
+import com.example.demo.service.TestThreadService;
 import com.example.demo.service.TestZkOperateService;
 import com.example.demo.service.TestZkOperateThreeService;
 import com.example.demo.service.TestZkOperateTwoService;
@@ -27,6 +28,9 @@ public class TestController {
 	
 	@Autowired
 	TestZkOperateThreeService testZkOperateThreeService;
+	
+	@Autowired
+	TestThreadService testThreadService;
 	
 	@RequestMapping(method=RequestMethod.GET,value="/test")
 	public String myTestController() {
@@ -79,6 +83,18 @@ public class TestController {
 			return testZkOperateThreeService.deleteNode();
 		}else if(operate == 3) {
 			return testZkOperateThreeService.isExistNode();
+		}else {
+			return "operate error";
+		}
+		
+	}
+	
+	@RequestMapping(method=RequestMethod.GET,value="th")
+	public String threadTest(Integer operate) {
+		if(operate == null) {
+			return "please input operate";
+		} else if(operate == 1) {
+			return testThreadService.test();
 		}else {
 			return "operate error";
 		}

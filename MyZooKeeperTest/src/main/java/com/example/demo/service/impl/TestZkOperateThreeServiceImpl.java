@@ -83,11 +83,11 @@ public class TestZkOperateThreeServiceImpl implements TestZkOperateThreeService,
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		try {
-			zk = new ZooKeeper(hostPort,15000,zkUtil);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			zk = new ZooKeeper(hostPort,15000,zkUtil);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 	}
 
 	private String explainList(List<String> list2) {
