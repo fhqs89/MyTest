@@ -1,4 +1,4 @@
-package com.example.demo.io;
+package com.example.demo.io.url;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -10,7 +10,7 @@ import java.net.URLConnection;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 
-public class IOtest06_urltest {
+public class URLTest04 {
 
 	public static void main(String[] args) {
 		

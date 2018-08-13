@@ -1,4 +1,4 @@
-package com.example.demo.io;
+package com.example.demo.io.url;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -12,7 +12,7 @@ import java.net.URL;
  * @author zh
  *
  */
-public class IOtest04_urltest {
+public class URLTest02 {
 
 	public static void main(String[] args) {
 		

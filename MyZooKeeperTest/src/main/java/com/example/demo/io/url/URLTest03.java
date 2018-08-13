@@ -1,4 +1,4 @@
-package com.example.demo.io;
+package com.example.demo.io.url;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -6,7 +6,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class IOtest05_urltest {
+public class URLTest03 {
 
 	public static void main(String[] args) {
 		try {
