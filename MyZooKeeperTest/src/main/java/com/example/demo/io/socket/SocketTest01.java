@@ -29,7 +29,6 @@ public class SocketTest01 {
 			writer.flush();
 			
 			//一定要定义一个结束符号，不然不会跳出循环
-			
 //			InputStream in = socket.getInputStream();
 //			Reader read = new InputStreamReader(in);
 //			int r = 0;
