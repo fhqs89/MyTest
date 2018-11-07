@@ -861,6 +861,17 @@ public interface MyMap<K,V> {
     }
 
     /**
+     * 如果指定的key没有与一个value关联或者key的映射值是null，那么用给定的非空value和key进行关联。
+     * 否则，使用给定的remapping函数计算结果替换之前关联的value。
+     * 如果计算结果为null，移除之前关联的value。
+     * 这个方法可能会用在，当将多个映射值组合在一起。
+     * 例如，要创建或者追加一个String msg到一个value的映射：
+     * 默认的实现等价于如下所示，如果没有默认值，则返回当前value或null：
+     * V oldValue = map.get(key);
+     * V newValue = (oldValue == null) ? value :
+     *              remappingFunction.apply(oldValue, value);
+     * 
+     * 
      * If the specified key is not already associated with a value or is
      * associated with null, associates it with the given non-null value.
      * Otherwise, replaces the associated value with the results of the given
