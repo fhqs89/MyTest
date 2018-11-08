@@ -211,12 +211,12 @@ public interface MyMap<K,V> {
          * 返回的比较器是可序列化的，当entry与空值进行比较时抛出NullPointerException
          * key的泛型要求实现Comparable接口，因为返回的Comparator接口的compare方法，
          * 要使用泛型的compareTo接口进行比较。
+         * 
+         * 返回比较器对Map.Entry<k,v="">进行比较，比较的方式采用key的自然排序。
+         * &表示返回比较器既要实现Comparator接口，也要实现Serializable接口。
+         * return 后面的代码是采用Lambda表达式形式返回函数式接口。
          * 返回一个Map.Entry的比较器，按照value的自然排序进行比较。
          * 
-         * @param  <K> the {@link Comparable} type of then map keys
-         * @param  <V> the type of the map values
-         * @return a comparator that compares {@link Map.Entry} in natural order on key.
-         * @see Comparable
          * @since 1.8
          */
         public static <K extends Comparable<? super K>, V> Comparator<MyMap.Entry<K,V>> comparingByKey() {
@@ -225,15 +225,10 @@ public interface MyMap<K,V> {
         }
 
         /**
-         * Returns a comparator that compares {@link Map.Entry} in natural order on value.
-         *
-         * <p>The returned comparator is serializable and throws {@link
-         * NullPointerException} when comparing an entry with null values.
-         *
-         * @param <K> the type of the map keys
-         * @param <V> the {@link Comparable} type of the map values
-         * @return a comparator that compares {@link Map.Entry} in natural order on value.
-         * @see Comparable
+         * 返回一个Map.Entry的比较器，按照value的自然排序进行比较。
+         * 返回的比较器是可序列化的，当entry与空值进行比较时抛出NullPointerException。
+         * value的泛型要求实现Comparable接口，因为返回的Comparator接口的compare方法，
+         * 要使用value泛型的compareTo接口进行比较。
          * @since 1.8
          */
         public static <K, V extends Comparable<? super V>> Comparator<MyMap.Entry<K,V>> comparingByValue() {
@@ -242,35 +237,20 @@ public interface MyMap<K,V> {
         }
 
         /**
-         * Returns a comparator that compares {@link Map.Entry} by key using the given
-         * {@link Comparator}.
-         *
-         * <p>The returned comparator is serializable if the specified comparator
-         * is also serializable.
-         *
-         * @param  <K> the type of the map keys
-         * @param  <V> the type of the map values
-         * @param  cmp the key {@link Comparator}
-         * @return a comparator that compares {@link Map.Entry} by the key.
+         * 返回一个Map.Entry的比较器，使用给定key的比较器进行比较。
+         * 如果指定的比较器是可序列化的，那么返回的比较器也要求是可序列化的。
+         * 入参cmp是一个比较器
          * @since 1.8
          */
         public static <K, V> Comparator<MyMap.Entry<K, V>> comparingByKey(Comparator<? super K> cmp) {
-            Objects.requireNonNull(cmp);
+            Objects.requireNonNull(cmp); //判断cmp是否为空，如果为空，抛出NullPointerException
             return (Comparator<MyMap.Entry<K, V>> & Serializable)
                 (c1, c2) -> cmp.compare(c1.getKey(), c2.getKey());
         }
 
         /**
-         * Returns a comparator that compares {@link Map.Entry} by value using the given
-         * {@link Comparator}.
-         *
-         * <p>The returned comparator is serializable if the specified comparator
-         * is also serializable.
-         *
-         * @param  <K> the type of the map keys
-         * @param  <V> the type of the map values
-         * @param  cmp the value {@link Comparator}
-         * @return a comparator that compares {@link Map.Entry} by the value.
+         * 返回一个Map.Entry的比较器，使用给定value的比较器进行比较。
+         * 如果指定的比较器是可序列化的，那么返回的比较器也要求是可序列化的。
          * @since 1.8
          */
         public static <K, V> Comparator<MyMap.Entry<K, V>> comparingByValue(Comparator<? super V> cmp) {
@@ -280,59 +260,35 @@ public interface MyMap<K,V> {
         }
     }
 
-    // Comparison and hashing
+    // Comparison and hashing  比较和散列
 
     /**
-     * Compares the specified object with this map for equality.  Returns
-     * <tt>true</tt> if the given object is also a map and the two maps
-     * represent the same mappings.  More formally, two maps <tt>m1</tt> and
-     * <tt>m2</tt> represent the same mappings if
-     * <tt>m1.entrySet().equals(m2.entrySet())</tt>.  This ensures that the
-     * <tt>equals</tt> method works properly across different implementations
-     * of the <tt>Map</tt> interface.
-     *
-     * @param o object to be compared for equality with this map
-     * @return <tt>true</tt> if the specified object is equal to this map
+     * 平等地比较指定object和该map是否相等。
+     * 如果指定地object也是一个map，并且这两个map表示同一个映射，那么返回true。
+     * 更正式的，对于两个map如m1和m2，如果m1.entrySet().equals(m2.entrySet())，
+     * 那么他们代表相同的映射。
+     * 这样确保了equals方法可以在不同的Map实现类中正常工作。
      */
     boolean equals(Object o);
 
     /**
-     * Returns the hash code value for this map.  The hash code of a map is
-     * defined to be the sum of the hash codes of each entry in the map's
-     * <tt>entrySet()</tt> view.  This ensures that <tt>m1.equals(m2)</tt>
-     * implies that <tt>m1.hashCode()==m2.hashCode()</tt> for any two maps
-     * <tt>m1</tt> and <tt>m2</tt>, as required by the general contract of
-     * {@link Object#hashCode}.
-     *
-     * @return the hash code value for this map
-     * @see Map.Entry#hashCode()
-     * @see Object#equals(Object)
-     * @see #equals(Object)
+     * 返回该map的哈希码。
+     * 一个map的哈希码被定义为该map的entrySet视图中每个entry的哈希码的和。
+     * 这样确保了对于任意两个map如m1和m2，
+     * 如果m1.equals(m2)，那么意味着e1.hashCode()==e2.hashCode()。
+     * 按照一般的要求规定Object.hashCode
      */
     int hashCode();
 
     // Defaultable methods
 
     /**
-     * Returns the value to which the specified key is mapped, or
-     * {@code defaultValue} if this map contains no mapping for the key.
-     *
-     * @implSpec
-     * The default implementation makes no guarantees about synchronization
-     * or atomicity properties of this method. Any implementation providing
-     * atomicity guarantees must override this method and document its
-     * concurrency properties.
-     *
-     * @param key the key whose associated value is to be returned
-     * @param defaultValue the default mapping of the key
-     * @return the value to which the specified key is mapped, or
-     * {@code defaultValue} if this map contains no mapping for the key
-     * @throws ClassCastException if the key is of an inappropriate type for
-     * this map
-     * (<a href="{@docRoot}/java/util/Collection.html#optional-restrictions">optional</a>)
-     * @throws NullPointerException if the specified key is null and this map
-     * does not permit null keys
-     * (<a href="{@docRoot}/java/util/Collection.html#optional-restrictions">optional</a>)
+     * 返回指定的key对应的value，如果map不包含key的映射，那么返回传入的默认值。
+     * 
+     * 默认实现不保证该方法的同步性或原子属性。任何提供原子性保证的实现，
+     * 都必须重写次方法并记录其并发性。
+     * 如果key的类型不符合，抛出ClassCastException
+     * 如果该map不支持key为null，传入null抛NullPointerException
      * @since 1.8
      */
     default V getOrDefault(Object key, V defaultValue) {
@@ -343,28 +299,15 @@ public interface MyMap<K,V> {
     }
 
     /**
-     * Performs the given action for each entry in this map until all entries
-     * have been processed or the action throws an exception.   Unless
-     * otherwise specified by the implementing class, actions are performed in
-     * the order of entry set iteration (if an iteration order is specified.)
-     * Exceptions thrown by the action are relayed to the caller.
-     *
-     * @implSpec
-     * The default implementation is equivalent to, for this {@code map}:
-     * <pre> {@code
-     * for (Map.Entry<K, V> entry : map.entrySet())
-     *     action.accept(entry.getKey(), entry.getValue());
-     * }</pre>
-     *
-     * The default implementation makes no guarantees about synchronization
-     * or atomicity properties of this method. Any implementation providing
-     * atomicity guarantees must override this method and document its
-     * concurrency properties.
-     *
-     * @param action The action to be performed for each entry
-     * @throws NullPointerException if the specified action is null
-     * @throws ConcurrentModificationException if an entry is found to be
-     * removed during iteration
+     * 在此map中对每个entry执行给定的操作，直到所有的entry执行完成或者抛出异常。
+     * 除非实现类另有规定，否则操作将按照entrySet迭代器的顺序执行（如果迭代器指定了顺序）。
+     * 由操作引发的异常会传递给调用者。
+     * 默认实现等价于：
+     * for(Map.Entry<k, v> entry : map.entrySet()){
+     * 		action.accept(entry.getKey(),entry.getValue());
+     * }
+     * 默认实现不保证该方法的同步性或原子性。
+     * 任何提供原子性保证的实现都必须重写此方法并记录其并发性。
      * @since 1.8
      */
     default void forEach(BiConsumer<? super K, ? super V> action) {
@@ -384,17 +327,13 @@ public interface MyMap<K,V> {
     }
 
     /**
-     * Replaces each entry's value with the result of invoking the given
-     * function on that entry until all entries have been processed or the
-     * function throws an exception.  Exceptions thrown by the function are
-     * relayed to the caller.
-     *
-     * @implSpec
-     * <p>The default implementation is equivalent to, for this {@code map}:
-     * <pre> {@code
+     * 将每个entry的value替换为在该entry上调用给定函数的结果，
+     * 直到所有的entry执行完成或者抛出异常。由操作引发的异常会传递给调用者。
+     * 默认实现等价于：
      * for (Map.Entry<K, V> entry : map.entrySet())
      *     entry.setValue(function.apply(entry.getKey(), entry.getValue()));
-     * }</pre>
+     * }
+     * 默认实现不保证该方法的同步性，
      *
      * <p>The default implementation makes no guarantees about synchronization
      * or atomicity properties of this method. Any implementation providing
