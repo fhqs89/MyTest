@@ -368,20 +368,9 @@ public abstract class MyAbstractMap<K,V> implements MyMap<K,V> {
      *
      * @implSpec
      * 这个实现首先检查指定的对象是否是该map对象，如果是，返回true。
-     * 接着检测指定对象是否继承Map接口，而且map大小，是否与该map大小相同，
-     * 
-     * This implementation first checks if the specified object is this map;
-     * if so it returns <tt>true</tt>.  Then, 
-     * it checks if the specified object is a map whose size is identical to the size of this map;
-     * object is a map whose size is identical to the size of this map; if
-     * not, it returns <tt>false</tt>.  If so, it iterates over this map's
-     * <tt>entrySet</tt> collection, and checks that the specified map
-     * contains each mapping that this map contains.  If the specified map
-     * fails to contain such a mapping, <tt>false</tt> is returned.  If the
-     * iteration completes, <tt>true</tt> is returned.
-     *
-     * @param o object to be compared for equality with this map
-     * @return <tt>true</tt> if the specified object is equal to this map
+     * 接着检测指定对象是否继承Map接口，而且map大小，是否与该map大小相同，如果不是返回false，
+     * 如果是，迭代Map中所有<tt>entrySet</tt>集合，检查指定的map是否包含该map的所有映射，
+     * 如果全部包含，则返回true，否则false。
      */
     public boolean equals(Object o) {
         if (o == this)
@@ -417,22 +406,13 @@ public abstract class MyAbstractMap<K,V> implements MyMap<K,V> {
     }
 
     /**
+     * 返回次map的hashCode值。
+     * 映射的哈希码被定义为，该map所有的entrySet()视图的hashCode的总和。
      * Returns the hash code value for this map.  The hash code of a map is
      * defined to be the sum of the hash codes of each entry in the map's
-     * <tt>entrySet()</tt> view.  This ensures that <tt>m1.equals(m2)</tt>
-     * implies that <tt>m1.hashCode()==m2.hashCode()</tt> for any two maps
-     * <tt>m1</tt> and <tt>m2</tt>, as required by the general contract of
-     * {@link Object#hashCode}.
-     *
-     * @implSpec
-     * This implementation iterates over <tt>entrySet()</tt>, calling
-     * {@link Map.Entry#hashCode hashCode()} on each element (entry) in the
-     * set, and adding up the results.
-     *
-     * @return the hash code value for this map
-     * @see Map.Entry#hashCode()
-     * @see Object#equals(Object)
-     * @see Set#equals(Object)
+     * <tt>entrySet()</tt> view.  
+     * 这样确保了对于两个map，m1和m2，有<tt>m1.equals(m2)</tt>的同时，
+     * <tt>m1.hashCode()==m2.hashCode()</tt>。
      */
     public int hashCode() {
         int h = 0;
@@ -443,16 +423,11 @@ public abstract class MyAbstractMap<K,V> implements MyMap<K,V> {
     }
 
     /**
-     * Returns a string representation of this map.  The string representation
-     * consists of a list of key-value mappings in the order returned by the
-     * map's <tt>entrySet</tt> view's iterator, enclosed in braces
-     * (<tt>"{}"</tt>).  Adjacent mappings are separated by the characters
-     * <tt>", "</tt> (comma and space).  Each key-value mapping is rendered as
-     * the key followed by an equals sign (<tt>"="</tt>) followed by the
-     * associated value.  Keys and values are converted to strings as by
-     * {@link String#valueOf(Object)}.
-     *
-     * @return a string representation of this map
+     * 返回一个String表示的map。
+     * Returns a string representation of this map.  
+     * 这个String表示，该map所有<tt>entrySet</tt>视图包含的key-value映射，
+     * 并用<tt>"{}"</tt>包起来，相邻的映射用<tt>", "</tt>隔开，
+     * 每组key-value用<tt>"= "</tt>在中间，
      */
     public String toString() {
         Iterator<Entry<K,V>> i = entrySet().iterator();
@@ -475,10 +450,7 @@ public abstract class MyAbstractMap<K,V> implements MyMap<K,V> {
     }
 
     /**
-     * Returns a shallow copy of this <tt>AbstractMap</tt> instance: the keys
-     * and values themselves are not cloned.
-     *
-     * @return a shallow copy of this map
+     * 返回<tt>AbstractMap</tt>的一个前拷贝实例：key和value本身不会被拷贝。
      */
     protected Object clone() throws CloneNotSupportedException {
     	MyAbstractMap<?,?> result = (MyAbstractMap<?,?>)super.clone();
@@ -488,8 +460,9 @@ public abstract class MyAbstractMap<K,V> implements MyMap<K,V> {
     }
 
     /**
-     * Utility method for SimpleEntry and SimpleImmutableEntry.
-     * Test for equality, checking for nulls.
+     * private方法
+     * SimpleEntry和SimpleImmutableEntry的实用方法。
+     * 用于测试检测null值的相等。
      *
      * NB: Do not replace with Object.equals until JDK-8015417 is resolved.
      */
@@ -503,16 +476,16 @@ public abstract class MyAbstractMap<K,V> implements MyMap<K,V> {
     // of a field in a subclass, they can't share representations,
     // and the amount of duplicated code is too small to warrant
     // exposing a common abstract class.
-
+    //实现注意：SimpleEntry和SimpleImmutableEntry是不同的不相关的类，即时他们共享一些代码。
+    //由于用户无法在子类中添加或减去字段，因此它们无法功能性表示形式，并且重复的代码数量太小，
+    //而法保证公开常见的抽象类。
 
     /**
-     * An Entry maintaining a key and a value.  The value may be
-     * changed using the <tt>setValue</tt> method.  This class
-     * facilitates the process of building custom map
-     * implementations. For example, it may be convenient to return
-     * arrays of <tt>SimpleEntry</tt> instances in method
-     * <tt>Map.entrySet().toArray</tt>.
-     *
+     * Entry对象，保存key和value的条目。
+     * value可以用<tt>setValue</tt>方法来改变。
+     * 此类有助于构建自定义map的实现。
+     * 例如，通过<tt>Map.entrySet().toArray</tt>方法，
+     * 他可以很方便的返回<tt>SimpleEntry</tt>数组。
      * @since 1.6
      */
     public static class SimpleEntry<K,V>
@@ -524,9 +497,7 @@ public abstract class MyAbstractMap<K,V> implements MyMap<K,V> {
         private V value;
 
         /**
-         * Creates an entry representing a mapping from the specified
-         * key to the specified value.
-         *
+         * 根据指定的key和value创建一个entry代表一个映射。
          * @param key the key represented by this entry
          * @param value the value represented by this entry
          */
@@ -536,8 +507,7 @@ public abstract class MyAbstractMap<K,V> implements MyMap<K,V> {
         }
 
         /**
-         * Creates an entry representing the same mapping as the
-         * specified entry.
+         * 根据指定的entry来创建一个相同的entry映射
          *
          * @param entry the entry to copy
          */
@@ -547,8 +517,7 @@ public abstract class MyAbstractMap<K,V> implements MyMap<K,V> {
         }
 
         /**
-         * Returns the key corresponding to this entry.
-         *
+         * 返回该entry相应的key值。
          * @return the key corresponding to this entry
          */
         public K getKey() {
@@ -556,8 +525,7 @@ public abstract class MyAbstractMap<K,V> implements MyMap<K,V> {
         }
 
         /**
-         * Returns the value corresponding to this entry.
-         *
+         * 返回该entry相应的value的值。
          * @return the value corresponding to this entry
          */
         public V getValue() {
@@ -565,9 +533,7 @@ public abstract class MyAbstractMap<K,V> implements MyMap<K,V> {
         }
 
         /**
-         * Replaces the value corresponding to this entry with the specified
-         * value.
-         *
+         * 用指定value替换该entry的value
          * @param value new value to be stored in this entry
          * @return the old value corresponding to the entry
          */
@@ -578,11 +544,11 @@ public abstract class MyAbstractMap<K,V> implements MyMap<K,V> {
         }
 
         /**
+         * 将指定对象与此条目进行比较以获得相等性。
          * Compares the specified object with this entry for equality.
-         * Returns {@code true} if the given object is also a map entry and
-         * the two entries represent the same mapping.  More formally, two
-         * entries {@code e1} and {@code e2} represent the same mapping
-         * if<pre>
+         * 如果对象是于个map.entry，且两个entry的映射相同，就返回true。
+         * 如果两个entry，e1和e2有如下关系，则视为相同entry：
+         * <pre>
          *   (e1.getKey()==null ?
          *    e2.getKey()==null :
          *    e1.getKey().equals(e2.getKey()))
@@ -590,9 +556,7 @@ public abstract class MyAbstractMap<K,V> implements MyMap<K,V> {
          *   (e1.getValue()==null ?
          *    e2.getValue()==null :
          *    e1.getValue().equals(e2.getValue()))</pre>
-         * This ensures that the {@code equals} method works properly across
-         * different implementations of the {@code Map.Entry} interface.
-         *
+         * 这确保了不同Map.Entry实现都可以通过这个方法判断。
          * @param o object to be compared for equality with this map entry
          * @return {@code true} if the specified object is equal to this map
          *         entry
@@ -606,15 +570,12 @@ public abstract class MyAbstractMap<K,V> implements MyMap<K,V> {
         }
 
         /**
-         * Returns the hash code value for this map entry.  The hash code
-         * of a map entry {@code e} is defined to be: <pre>
+         * 返回这个map entry的hashCode。
+         * map entry的hashCode是这样定义的：
+         * <pre>
          *   (e.getKey()==null   ? 0 : e.getKey().hashCode()) ^
          *   (e.getValue()==null ? 0 : e.getValue().hashCode())</pre>
-         * This ensures that {@code e1.equals(e2)} implies that
-         * {@code e1.hashCode()==e2.hashCode()} for any two Entries
-         * {@code e1} and {@code e2}, as required by the general
-         * contract of {@link Object#hashCode}.
-         *
+         * 这样确保了任意两个entry的code
          * @return the hash code value for this map entry
          * @see    #equals
          */
@@ -624,11 +585,8 @@ public abstract class MyAbstractMap<K,V> implements MyMap<K,V> {
         }
 
         /**
-         * Returns a String representation of this map entry.  This
-         * implementation returns the string representation of this
-         * entry's key followed by the equals character ("<tt>=</tt>")
-         * followed by the string representation of this entry's value.
-         *
+         * 返回代表这个map entry的String。
+         * 这个方法返回entry的key和value，中间用("<tt>=</tt>")隔开。
          * @return a String representation of this map entry
          */
         public String toString() {
@@ -638,11 +596,9 @@ public abstract class MyAbstractMap<K,V> implements MyMap<K,V> {
     }
 
     /**
-     * An Entry maintaining an immutable key and value.  This class
-     * does not support method <tt>setValue</tt>.  This class may be
-     * convenient in methods that return thread-safe snapshots of
-     * key-value mappings.
-     *
+     * 保持不可变键和值的Entry。
+     * 这个类不支持<tt>setValue</tt>方法。
+     * 这个类方便做一个线程安全的key-value映射快照。
      * @since 1.6
      */
     public static class SimpleImmutableEntry<K,V>
@@ -654,9 +610,7 @@ public abstract class MyAbstractMap<K,V> implements MyMap<K,V> {
         private final V value;
 
         /**
-         * Creates an entry representing a mapping from the specified
-         * key to the specified value.
-         *
+         * 根据指定的key和value创建一个entry映射。
          * @param key the key represented by this entry
          * @param value the value represented by this entry
          */
@@ -666,9 +620,7 @@ public abstract class MyAbstractMap<K,V> implements MyMap<K,V> {
         }
 
         /**
-         * Creates an entry representing the same mapping as the
-         * specified entry.
-         *
+         * 根据指定的entry来创建一个相同的entry映射
          * @param entry the entry to copy
          */
         public SimpleImmutableEntry(Entry<? extends K, ? extends V> entry) {
@@ -677,8 +629,7 @@ public abstract class MyAbstractMap<K,V> implements MyMap<K,V> {
         }
 
         /**
-         * Returns the key corresponding to this entry.
-         *
+         * 返回相应entry的key。
          * @return the key corresponding to this entry
          */
         public K getKey() {
@@ -686,8 +637,7 @@ public abstract class MyAbstractMap<K,V> implements MyMap<K,V> {
         }
 
         /**
-         * Returns the value corresponding to this entry.
-         *
+         * 返回相应entry映射的value。
          * @return the value corresponding to this entry
          */
         public V getValue() {
@@ -695,11 +645,8 @@ public abstract class MyAbstractMap<K,V> implements MyMap<K,V> {
         }
 
         /**
-         * Replaces the value corresponding to this entry with the specified
-         * value (optional operation).  This implementation simply throws
-         * <tt>UnsupportedOperationException</tt>, as this class implements
-         * an <i>immutable</i> map entry.
-         *
+         * 用指定value替换相应的entry的value。
+         * 这个方法实现抛出 <tt>UnsupportedOperationException</tt>异常。
          * @param value new value to be stored in this entry
          * @return (Does not return)
          * @throws UnsupportedOperationException always
@@ -709,11 +656,10 @@ public abstract class MyAbstractMap<K,V> implements MyMap<K,V> {
         }
 
         /**
-         * Compares the specified object with this entry for equality.
-         * Returns {@code true} if the given object is also a map entry and
-         * the two entries represent the same mapping.  More formally, two
-         * entries {@code e1} and {@code e2} represent the same mapping
-         * if<pre>
+         * 将指定对象与此条目进行比较以获得相等性。
+         * 如果对象是于个map.entry，且两个entry的映射相同，就返回true。
+         * 如果两个entry，e1和e2有如下关系，则视为相同entry：
+         * <pre>
          *   (e1.getKey()==null ?
          *    e2.getKey()==null :
          *    e1.getKey().equals(e2.getKey()))
@@ -721,8 +667,8 @@ public abstract class MyAbstractMap<K,V> implements MyMap<K,V> {
          *   (e1.getValue()==null ?
          *    e2.getValue()==null :
          *    e1.getValue().equals(e2.getValue()))</pre>
-         * This ensures that the {@code equals} method works properly across
-         * different implementations of the {@code Map.Entry} interface.
+         * 
+         * 这确保了不同Map.Entry实现都可以通过这个方法判断。
          *
          * @param o object to be compared for equality with this map entry
          * @return {@code true} if the specified object is equal to this map
@@ -737,15 +683,12 @@ public abstract class MyAbstractMap<K,V> implements MyMap<K,V> {
         }
 
         /**
-         * Returns the hash code value for this map entry.  The hash code
-         * of a map entry {@code e} is defined to be: <pre>
+         * 返回这个map entry的hashCode。
+         * map entry的hashCode是这样定义的：
+         * <pre>
          *   (e.getKey()==null   ? 0 : e.getKey().hashCode()) ^
          *   (e.getValue()==null ? 0 : e.getValue().hashCode())</pre>
-         * This ensures that {@code e1.equals(e2)} implies that
-         * {@code e1.hashCode()==e2.hashCode()} for any two Entries
-         * {@code e1} and {@code e2}, as required by the general
-         * contract of {@link Object#hashCode}.
-         *
+         * 这样确保了任意两个entry的code
          * @return the hash code value for this map entry
          * @see    #equals
          */
@@ -755,11 +698,8 @@ public abstract class MyAbstractMap<K,V> implements MyMap<K,V> {
         }
 
         /**
-         * Returns a String representation of this map entry.  This
-         * implementation returns the string representation of this
-         * entry's key followed by the equals character ("<tt>=</tt>")
-         * followed by the string representation of this entry's value.
-         *
+         * 返回代表这个map entry的String。
+         * 这个方法返回entry的key和value，中间用("<tt>=</tt>")隔开。
          * @return a String representation of this map entry
          */
         public String toString() {
