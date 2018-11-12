@@ -82,12 +82,12 @@ public interface MyMap<K,V> {
     V put(K key, V value);
 
     /**
-     * 如果该map包含key的映射，则删除该映射。
-     * 返回值是先前对应key的value，如果没有该key的映射，则返回null。
-     * 如果map支持value的值为null，那么返回null也可能表明key在先前对应的value就是null。
-     * 一旦调用返回，该map将不再包含指定key的映射。
-     * 如果该map不支持remove操作，将抛出UnsupportedOperationException。
-     * 如果key是非法类型，则抛出ClassCastException。
+     * 如果该map包含key的映射，则删除该映射。<br/>
+     * 返回值是先前对应key的value，如果没有该key的映射，则返回null。<br/>
+     * 如果map支持value的值为null，那么返回null也可能表明key在先前对应的value就是null。<br/>
+     * 一旦调用返回，该map将不再包含指定key的映射。<br/>
+     * 如果该map不支持remove操作，将抛出UnsupportedOperationException。<br/>
+     * 如果key是非法类型，则抛出ClassCastException。<br/>
      * 如果该map不支持key=null，将抛出NullPointerException。
      */
     V remove(Object key);
