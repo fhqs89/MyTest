@@ -2,6 +2,7 @@ package com.example.demo.face.map;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class MapTest1 {
 
@@ -17,6 +18,8 @@ public class MapTest1 {
 //		mySimpleAbstractMap
 		mySimpleAbstractMap.put("efwe", "ewfwef");
 		mySimpleAbstractMap.get("");
+		
+		Map<String ,String> curMap = new ConcurrentHashMap<String,String>();
 		
 	}
 
