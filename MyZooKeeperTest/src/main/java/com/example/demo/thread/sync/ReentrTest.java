@@ -24,16 +24,14 @@ public class ReentrTest implements Runnable{
 				lock1.lockInterruptibly();
 				try {
 					Thread.sleep(500);
-				}catch(InterruptedException e) {
-					lock2.lockInterruptibly();
-				}
+				}catch(InterruptedException e) {e.printStackTrace();}
+				lock2.lockInterruptibly();
 			}else {
 				lock2.lockInterruptibly();
 				try {
 					Thread.sleep(500);
-				}catch(InterruptedException e) {
-					lock1.lockInterruptibly();
-				}
+				}catch(InterruptedException e) {e.printStackTrace();}
+				lock1.lockInterruptibly();
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -57,9 +55,9 @@ public class ReentrTest implements Runnable{
 		
 		t1.start();
 		t2.start();
-		Thread.sleep(1000);
+		Thread.sleep(3000);
 		//中断其中一个线程
 		t2.interrupt();
-		System.out.println(Thread.currentThread().getId()+":线程退出");
+		System.out.println(Thread.currentThread().getId()+"-----:线程退出");
 	}
 }
