@@ -17,7 +17,6 @@ import org.apache.zookeeper.Watcher.Event.KeeperState;
 import org.apache.zookeeper.ZooDefs;
 import org.apache.zookeeper.ZooKeeper;
 import org.apache.zookeeper.data.Stat;
-import org.springframework.beans.factory.annotation.Value;
 
 public class DistributedLock implements Lock,Watcher{
 
