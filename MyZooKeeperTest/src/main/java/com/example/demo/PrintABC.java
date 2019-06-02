@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
  * 打印ABC失败
@@ -7,9 +8,10 @@ package com.example.demo;
  *
  */
 public class PrintABC {
-
 	public static void main(String[] args) {
-		
+		ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
+		ReentrantReadWriteLock.ReadLock l = lock.readLock();
+		l.lock();
 		Print p1 = new Print(0);
 		Print p2 = new Print(1);
 		Print p3 = new Print(2);
@@ -17,7 +19,7 @@ public class PrintABC {
 		new Thread(p1,"p1").start();
 		new Thread(p2,"p2").start();
 		new Thread(p3,"p3").start();
-		
+		l.unlock();
 		System.out.println("Done!");
 	}
 	
