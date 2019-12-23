@@ -1,4 +1,4 @@
-package com.example.demo.net;
+package com.example.demo.nio;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -14,13 +14,11 @@ public class NioServerHandle implements Runnable{
 	
 	private Selector selector;
 	private ServerSocketChannel serverChannel;
-	public String ip;
 	public int port;
 	
 	private volatile boolean start = true;
 	
-	public NioServerHandle(String ip, int port) {
-		this.ip = ip;
+	public NioServerHandle(int port) {
 		this.port = port;
 		try {
 			selector = Selector.open();

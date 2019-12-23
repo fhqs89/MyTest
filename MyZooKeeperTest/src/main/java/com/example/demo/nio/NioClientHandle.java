@@ -1,4 +1,4 @@
-package com.example.demo.net;
+package com.example.demo.nio;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -16,7 +16,7 @@ public class NioClientHandle implements Runnable{
 	private Selector selector;
 	private SocketChannel socketChannel;
 	
-	private volatile boolean start = true;
+	private volatile boolean start;
 	
 	public NioClientHandle(String ip, int port) {
 		this.ip = ip;
@@ -67,12 +67,12 @@ public class NioClientHandle implements Runnable{
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			if(selector != null) {
-				try {
-					selector.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+		}
+		if(selector != null) {
+			try {
+				selector.close();
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 		}
 	}
@@ -107,7 +107,7 @@ public class NioClientHandle implements Runnable{
 	}
 
 	public void sendMsg(String msg) throws IOException {
-		socketChannel.register(selector, SelectionKey.OP_CONNECT);
+		socketChannel.register(selector, SelectionKey.OP_READ);
 		doWrite(socketChannel, msg);
 	}
 	
@@ -121,6 +121,7 @@ public class NioClientHandle implements Runnable{
 
 	private void doConnect() throws IOException {
 		if(socketChannel.connect(new InetSocketAddress(ip,port))) {
+		}else {
 			socketChannel.register(selector, SelectionKey.OP_CONNECT);
 		}
 	}
