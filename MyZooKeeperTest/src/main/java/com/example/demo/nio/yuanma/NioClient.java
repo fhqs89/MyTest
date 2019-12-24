@@ -27,7 +27,10 @@ public class NioClient {
         System.out.println("请输入请求消息：");
         Scanner scanner = new Scanner(System.in);
         while(NioClient.sendMsg(scanner.next()));
-
+    	System.out.println(1 << 0);
+    	System.out.println(1 << 2);
+    	System.out.println(1 << 3);
+    	System.out.println(1 << 4);
     }
 
 }
