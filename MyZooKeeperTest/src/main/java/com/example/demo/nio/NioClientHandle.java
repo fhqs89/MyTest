@@ -120,6 +120,7 @@ public class NioClientHandle implements Runnable{
 	}
 
 	private void doConnect() throws IOException {
+		//非阻塞模式下，connect操作会返回false，后面会发出CONNECT事件来表示连接
 		if(socketChannel.connect(new InetSocketAddress(ip,port))) {
 		}else {
 			socketChannel.register(selector, SelectionKey.OP_CONNECT);
