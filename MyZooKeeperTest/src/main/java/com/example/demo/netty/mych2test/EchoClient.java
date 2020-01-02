@@ -23,12 +23,13 @@ public class EchoClient {
 		EventLoopGroup group = new NioEventLoopGroup();
 		
 		try {
-			Bootstrap b = new Bootstrap();
-			b.group(group);
-			b.channel(NioSocketChannel.class);
-			b.remoteAddress(new InetSocketAddress(host, port));
-			b.handler(new EchoClientHandler());
-			ChannelFuture fu = b.connect().sync();
+			Bootstrap b = new Bootstrap(); /* 客户端启动必备*/
+			b.group(group); 
+			b.channel(NioSocketChannel.class); /* 指明使用Nio进行通讯*/
+			b.remoteAddress(new InetSocketAddress(host, port)); /*配置远程服务器地址*/
+			b.handler(new EchoClientHandler()); 
+			ChannelFuture fu = b.connect().sync(); /*连接到远程节点，阻塞等待直到完成*/
+			/*阻塞，直到channel关闭*/
 			fu.channel().closeFuture().sync();
 		}finally {
 			group.shutdownGracefully().sync();

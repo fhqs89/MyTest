@@ -3,6 +3,7 @@ package com.example.demo.netty.ch2;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
@@ -39,9 +40,10 @@ public class EchoServer  {
             ServerBootstrap b = new ServerBootstrap();/*服务端启动必备*/
             b.group(group)
                     /*指明使用NIO进行网络通讯*/
-            .channel(NioServerSocketChannel.class)
+            .channel(NioServerSocketChannel.class)//5种
                     /*指明服务器监听端口*/
                     .localAddress(new InetSocketAddress(port))
+                    .childOption(ChannelOption.TCP_NODELAY, true)
                     /*接收到连接请求，新启一个socket通信，也就是channel，每个channel
                     * 有自己的事件的handler*/
                     .childHandler(new ChannelInitializer<SocketChannel>() {
